@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "einshard"
+version = "0.0.1"
+authors = [
+  { name="Ayaka", email="ayaka@mail.shn.hk" },
+  { name="Shin", email="shin@yixiaoer.sg" },
+]
+description = "High-level array sharding API for JAX"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
+    'Topic :: System :: Distributed Computing',
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "jax",
+    "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/ayaka14732/einshard"
+Issues = "https://github.com/ayaka14732/einshard/issues"
