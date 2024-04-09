@@ -7,7 +7,6 @@ where = ["src"]
 
 [project]
 name = "einshard"
-version = "0.0.1"
 authors = [
   { name="Ayaka", email="ayaka@mail.shn.hk" },
   { name="Shin", email="shin@yixiaoer.sg" },
@@ -25,7 +24,11 @@ dependencies = [
     "jax",
     "mypy",
 ]
+dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/ayaka14732/einshard"
 Issues = "https://github.com/ayaka14732/einshard/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "einshard.__version__"}

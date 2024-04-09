@@ -13,17 +13,17 @@ def _partition_at_ellipsis(lst: list) -> tuple[list, list]:
     r = lst[idx + 1:]
     return l, r
 
-def einshard(arr: Array, expression: str) -> Array:
-    """
-    Shards a :class:`jax.Array` according to a specified pattern, using a human-readable expression similar to that used in einsum notation.
+def sharding(expression: str, *, n_dims: int | None = None) -> NamedSharding:
+    '''
+    Get sharding from einshard expression.
 
     Args:
-        arr (jax.Array): The Array to be processed with tensor parallelism.
-        expression (str): A human-readable expression similar to einsum notation that specifies the sharding pattern.
+        expression (str): The einshard expression.
+        n_dims (int | None): The number of dimensions of the array to be sharded. This argument must be provided if ellipsis is used in the einshard expression.
 
     Returns:
-        Array: The sharded array.
-    """
+        jax.sharding.NamedSharding: The :class:`jax.sharding.Sharding` object corresponding to the given expression.
+    '''
     n_devices = jax.device_count()
 
     res = parse_expression(expression, 0)
@@ -36,8 +36,10 @@ def einshard(arr: Array, expression: str) -> Array:
     n_right_ellipses = sum(element_right is ... for element_right in elements_right)
     assert n_left_ellipses == n_right_ellipses and n_left_ellipses <= 1
 
-    if n_left_ellipses > 0:  # == 1
-        n_dims = len(arr.shape)
+    if n_left_ellipses == 0:
+        assert n_dims == len(elements_left)
+    else:  # == 1
+        assert n_dims is not None
         n_dims_elided = n_dims - len(elements_left) + 1
         axis_names_for_left_augmented = [f'?{i}' for i in range(n_dims_elided)]
         axis_names_for_right_augmented = [(identifier, 1, False) for identifier in axis_names_for_left_augmented]  # 1: `sharding_number`, False: `is_proportional`
@@ -81,5 +83,20 @@ def einshard(arr: Array, expression: str) -> Array:
 
     devices = mesh_utils.create_device_mesh(mesh_shape)
     mesh = Mesh(devices, axis_names=axis_names)
-    arr = jax.make_array_from_callback(arr.shape, NamedSharding(mesh, P(*partition_spec)), lambda idx: arr[idx])
+    sharding_ = NamedSharding(mesh, P(*partition_spec))
+    return sharding_
+
+def shard(arr: Array, expression: str) -> Array:
+    '''
+    Shards a :class:`jax.Array` according to the given einshard expression.
+
+    Args:
+        arr (jax.Array): The array to be sharded.
+        expression (str): The einshard expression.
+
+    Returns:
+        jax.Array: The sharded array.
+    '''
+    sharding_ = sharding(expression, n_dims=len(arr.shape))
+    arr = jax.make_array_from_callback(arr.shape, sharding_, lambda idx: arr[idx])
     return arr

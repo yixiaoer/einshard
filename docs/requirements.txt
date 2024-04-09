@@ -1,6 +1,6 @@
+jax[cpu]
+
 sphinx
 sphinx-autobuild
 sphinx-autodoc-typehints
 sphinx-book-theme
-
-jax[cpu]
