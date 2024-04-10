@@ -18,6 +18,8 @@ This library requires at least Python 3.12.
 pip install einshard
 ```
 
+You need to have JAX installed by [choosing the correct installation method](https://jax.readthedocs.io/en/latest/installation.html) before installing Einshard.
+
 ## Usage
 
 For testing purpose, we initialise the JAX CPU backend with 16 devices. This should be run before the actual code (e.g. placed at the top of the script):
@@ -59,10 +61,14 @@ Output:
 
 ## Development
 
+Crente venv:
+
 ```sh
 python3.12 -m venv venv
 . venv/bin/activate
 ```
+
+Install dependencies:
 
 ```sh
 pip install -U pip

@@ -4,7 +4,9 @@
    contain the root `toctree` directive.
 
 Einshard Documentation
-====================================
+======================
+
+**Useful links**: `Source Repository <https://github.com/ayaka14732/einshard>`_ | `Issue Tracker <https://github.com/ayaka14732/einshard/issues>`_ 
 
 API
 ---
