@@ -13,9 +13,9 @@ def _partition_at_ellipsis(lst: list) -> tuple[list, list]:
     r = lst[idx + 1:]
     return l, r
 
-def sharding(expression: str, *, n_dims: int | None = None) -> NamedSharding:
+def make_sharding(expression: str, *, n_dims: int | None = None) -> NamedSharding:
     '''
-    Get sharding from einshard expression.
+    Make sharding from einshard expression.
 
     Args:
         expression (str): The einshard expression.
@@ -84,10 +84,10 @@ def sharding(expression: str, *, n_dims: int | None = None) -> NamedSharding:
 
     devices = mesh_utils.create_device_mesh(mesh_shape)
     mesh = Mesh(devices, axis_names=axis_names)
-    sharding_ = NamedSharding(mesh, P(*partition_spec))
-    return sharding_
+    sharding = NamedSharding(mesh, P(*partition_spec))
+    return sharding
 
-def shard(arr: Array, expression: str) -> Array:
+def einshard(arr: Array, expression: str) -> Array:
     '''
     Shards a :class:`jax.Array` according to the given einshard expression.
 
@@ -98,6 +98,6 @@ def shard(arr: Array, expression: str) -> Array:
     Returns:
         jax.Array: The sharded array.
     '''
-    sharding_ = sharding(expression, n_dims=len(arr.shape))
-    arr = jax.make_array_from_callback(arr.shape, sharding_, lambda idx: arr[idx])
+    sharding = make_sharding(expression, n_dims=len(arr.shape))
+    arr = jax.make_array_from_callback(arr.shape, sharding, lambda idx: arr[idx])
     return arr
