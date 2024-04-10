@@ -37,7 +37,8 @@ def sharding(expression: str, *, n_dims: int | None = None) -> NamedSharding:
     assert n_left_ellipses == n_right_ellipses and n_left_ellipses <= 1
 
     if n_left_ellipses == 0:
-        assert n_dims == len(elements_left)
+        if n_dims is not None:
+            assert n_dims == len(elements_left)
     else:  # == 1
         assert n_dims is not None
         n_dims_elided = n_dims - len(elements_left) + 1
