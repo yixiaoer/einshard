@@ -6,7 +6,7 @@ import subprocess
 from jax import Array
 import jax.numpy as jnp
 
-import einshard
+from einshard import einshard
 
 def set_device_count(n: int) -> None:
     os.environ['JAX_PLATFORMS'] = 'cpu'
@@ -61,7 +61,7 @@ tests = [
 def invoke_test(spec) -> None:
     set_device_count(spec['n_devices'])
     a = jnp.zeros(spec['shape'])
-    a = einshard.shard(a, spec['expr'])
+    a = einshard(a, spec['expr'])
     assert_equal(get_shard_shape(a), spec['ans'])
 
 def main() -> None:

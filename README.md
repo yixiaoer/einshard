@@ -34,12 +34,12 @@ os.environ['XLA_FLAGS'] = os.environ.get('XLA_FLAGS', '') + f' --xla_force_host_
 Code:
 
 ```python
-import einshard 
+from einshard import einshard 
 import jax
 import jax.numpy as jnp
 
 a = jnp.zeros((4, 8))
-a = einshard.shard(a, 'a b -> * a* b2*')
+a = einshard(a, 'a b -> * a* b2*')
 jax.debug.visualize_array_sharding(a)
 ```
 
