@@ -16,8 +16,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
-    'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
-    'Topic :: System :: Distributed Computing',
+    "License :: OSI Approved :: MIT License",
+    "Topic :: System :: Distributed Computing",
     "Operating System :: OS Independent",
 ]
 dependencies = [
@@ -27,8 +27,8 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/ayaka14732/einshard"
-Issues = "https://github.com/ayaka14732/einshard/issues"
+Homepage = "https://github.com/yixiaoer/einshard"
+Issues = "https://github.com/yixiaoer/einshard/issues"
 
 [tool.setuptools.dynamic]
 version = {attr = "einshard.__version__"}
