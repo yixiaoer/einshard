@@ -6,15 +6,15 @@ Using the `einshard` API, you can partition or replicate a single array accordin
 
 ## Steps for Sharding a Model with `einshard`
 
-1. **Analyze the Model Structure**:
+1. **Analyze the model structure**:
 
    Determine which axes are reduced axes and which are free axes in the arrays used for matrix multiplication (as can be represented by einsum expressions).
 
-2. **Determine Sharding and Replication Strategy**:
+2. **Determine sharding and replication strategy**:
 
    For each array in the computation, decide how to shard or replicate each axis to ensure the entire computation process remains naturally sharded and the final output matches your expectations.
 
-3. **Select Parallelism Method and Apply `einshard`**:
+3. **Select parallelism method and apply `einshard`**:
    
    Use `einshard` to specify the sharding or replication of the arrays based on your parallelism strategy.
 
@@ -29,21 +29,21 @@ Consider a 2-layer MLP. The computations can be represented by the following ein
 Step-by-Step Sharding:
 
 1. **Analyze the model structure**:
-   - Input array \( X \) has shape \( bx \) and multiplies with \( W1 \) (shape \( xy \)) to produce \( Y \) (shape \( by \)). Here, \( x \) is a reduced axis, while \( b \) and \( y \) are free axes.
-   - \( Y \) (shape \( by \)) then multiplies with \( W2 \) (shape \( yz \)) to produce \( Z \) (shape \( bz \)). In this computation, \( y \) is a reduced axis, while \( b \) and \( z \) are free axes.
+   - Input array $X$ has shape bx and multiplies with $W_1$ (shape xy) to produce $Y$ (shape by). Here, $x$ is a reduced axis, while $b$ and $y$ are free axes.
+   - $Y$ (shape by) then multiplies with $W_2$ (shape yz) to produce $Z$ (shape bz). In this computation, $y$ is a reduced axis, while $b$ and $z$ are free axes.
 
-2. **Determine Sharding and Replication**:
+2. **Determine sharding and replication**:
 
-   The array \( X \) is the input data, while \( W1 \) and \( W2 \) are the model parameters for this 2-layer MLP. These arrays need to be sharded before the computation starts. Consider the following potential sharding strategies:
+   The array $X$ is the input data, while $W_1$ and $W_2$ are the model parameters for this 2-layer MLP. These arrays need to be sharded before the computation starts. Consider the following potential sharding strategies:
 
-   * Sharding the `b` axis in the first matrix computation results in the `b` axis being sharded in \( Y \), and consequently, the final output \( Z \) will also have the `b` axis sharded. The same applies if the `z` axis is sharded.
+   * Sharding the `b` axis in the first matrix computation results in the `b` axis being sharded in $Y$, and consequently, the final output $Z$ will also have the `b` axis sharded. The same applies if the `z` axis is sharded.
 
-   * Sharding the `x` axis in the first matrix computation results in \( Y \) being complete after all-reduce. If the `z` axis of \( W2 \) is sharded, the output \( Z \) will be sharded.
+   * Sharding the `x` axis in the first matrix computation results in $Y$ being complete after all-reduce. If the `z` axis of $W_2$ is sharded, the output $Z$ will be sharded.
 
-   * Sharding the `y` axis in the first matrix computation results in the `y` axis being sharded in \( Y \). If the `y` axis of \( W2 \) is also sharded, the output \( Z \) will be complete after all-reduce.
+   * Sharding the `y` axis in the first matrix computation results in the `y` axis being sharded in $Y$. If the `y` axis of $W_2$ is also sharded, the output $Z$ will be complete after all-reduce.
 
 3. **Use `einshard` for sharding or replication**:
-   If you expect to apply 1-D tensor parallelism and ensure the model parameters are efficiently sharded while obtaining a complete result, you can choose to shard the \( y \) axis of \( W1 \) and \( W2 \):
+   If you expect to apply 1-D tensor parallelism and ensure the model parameters are efficiently sharded while obtaining a complete result, you can choose to shard the $y$ axis of $W_1$ and $W_2$:
 
    ```python
    w1_proj = einshard(w1_proj, 'x y -> x y*')

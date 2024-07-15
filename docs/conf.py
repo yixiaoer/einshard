@@ -26,6 +26,10 @@ extensions = [
     'myst_nb',
 ]
 
+myst_enable_extensions = [
+    'dollarmath',
+]
+
 html_theme = 'sphinx_book_theme'
 
 templates_path = ['_templates']

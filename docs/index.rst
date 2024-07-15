@@ -6,7 +6,7 @@
 Einshard Documentation
 ======================
 
-**Useful links**: `Source Repository <https://github.com/ayaka14732/einshard>`_ | `Issue Tracker <https://github.com/ayaka14732/einshard/issues>`_ 
+**Useful links**: `Source Repository <https://github.com/yixiaoer/einshard>`_ | `Issue Tracker <https://github.com/yixiaoer/einshard/issues>`_ 
 
 API
 ---
@@ -16,9 +16,7 @@ API
 
    application
 
-
-.. toctree::
-   :maxdepth: 2
+   theory
 
    einshard
 

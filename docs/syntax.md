@@ -1,12 +1,15 @@
-# Syntax and Usage
+# Syntax
 
 `einshard` leverages a simple and clear method to shard and replicate a single array according to the specified einshard expression. How to write a correct einshard expression? Let's take a look at the syntax.
 
-## 3 Parts
+## Einshard Expression
+
 An einshard expression consists of three parts, the left-hand side, the arrow, and the right-hand side:
 
 * The left-hand side includes all the axes names of the array. 
+
     * Different axis names should be separated by spaces (either multiple or single spaces are allowed, but a single space is recommended).
+
     * Axis names are composed of case-sensitive letters.
 
 * The arrow, represented by `->`, separates the left and right sides. Spaces around the arrow are optional, but a single space is recommended.
@@ -112,7 +115,7 @@ import jax.numpy as jnp
 
    The position of these numbers or `*` can affect how devices are allocated to different partitions.
 
-   TODO: More examples and edge cases will be added to illustrate different placements and their effects on device allocation.
+   TODO: More examples and edge cases will be added to illustrate different placements and their effects on device groups of devices.
 
 When using `einshard`, consider the number of devices you have. You should always use `*` and `...` when possible to simplify the expressions and leverage the library's flexibility.
 
