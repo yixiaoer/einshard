@@ -4,3 +4,4 @@ sphinx
 sphinx-autobuild
 sphinx-autodoc-typehints
 sphinx-book-theme
+myst-nb

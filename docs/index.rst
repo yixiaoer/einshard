@@ -12,6 +12,14 @@ API
 ---
 
 .. toctree::
+   syntax
+
+   application
+
+
+.. toctree::
    :maxdepth: 2
 
    einshard
+
+

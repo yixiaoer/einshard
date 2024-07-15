@@ -1,5 +1,5 @@
-einshard
-========
+API References
+==============
 
 .. automodule:: einshard
    :imported-members:
