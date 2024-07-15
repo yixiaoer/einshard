@@ -10,57 +10,20 @@ This project originated as a part of the [Mistral 7B v0.2 JAX](https://github.co
 
 This project is supported by Cloud TPUs from Google's [TPU Research Cloud](https://sites.research.google/trc/about/) (TRC).
 
-Please see the detailed documentation at <https://einshard.readthedocs.io/en/latest/>.
-
 ## Installation
 
 This library requires at least Python 3.12.
+
+You need to have JAX installed by [choosing the correct installation method](https://jax.readthedocs.io/en/latest/installation.html) before installing einshard.
+
+After JAX is installed, install einshard with this command:
 
 ```sh
 pip install einshard
 ```
 
-You need to have JAX installed by [choosing the correct installation method](https://jax.readthedocs.io/en/latest/installation.html) before installing Einshard.
+## Documentation
 
-## Development
+Please see the detailed documentation at <https://einshard.readthedocs.io/en/latest/>.
 
-Crente venv:
-
-```sh
-python3.12 -m venv venv
-. venv/bin/activate
-```
-
-Install dependencies:
-
-```sh
-pip install -U pip
-pip install -U wheel
-pip install "jax[cpu]"
-pip install -r requirements.txt
-```
-
-Run test:
-
-```sh
-python tests/test_einshard.py
-```
-
-Build package:
-
-```sh
-pip install build
-python -m build
-```
-
-Build docs:
-
-```sh
-cd docs
-make html
-```
-
-```sh
-cd docs/_build/html
-python -m http.server -b 127.0.0.1
-```
+We have a [draft PDF file](https://www.overleaf.com/read/qgrbbtrntwrg) for the theory.

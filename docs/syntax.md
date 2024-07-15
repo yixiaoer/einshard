@@ -4,15 +4,13 @@
 
 ## Einshard Expression
 
-An einshard expression consists of three parts, the left-hand side, the arrow, and the right-hand side:
+An einshard expression consists of two parts, separated by an arrow `->`:
 
 * The left-hand side includes all the axes names of the array. 
 
     * Different axis names should be separated by spaces (either multiple or single spaces are allowed, but a single space is recommended).
 
     * Axis names are composed of case-sensitive letters.
-
-* The arrow, represented by `->`, separates the left and right sides. Spaces around the arrow are optional, but a single space is recommended.
 
 * The right-hand side includes all the axes names of the array along with the corresponding sharding and replication methods.
 
