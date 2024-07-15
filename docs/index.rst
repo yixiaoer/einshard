@@ -8,12 +8,12 @@ Einshard Documentation
 
 **Useful links**: `Source Repository <https://github.com/yixiaoer/einshard>`_ | `Issue Tracker <https://github.com/yixiaoer/einshard/issues>`_ 
 
-Welcome to `einshard <https://github.com/yixiaoer/einshard>`_'s documentation! Einshard is an einsum-like high-level API to shard and replicate arrays in JAX.
+Welcome to `einshard <https://github.com/yixiaoer/einshard>`_'s documentation! Einshard is an einsum-like high-level API to shard and replicate arrays in JAX. With einshard, you can easily implement data parallelism and 1-D tensor parallelism.
 
 .. toctree::
    quick-start
    syntax
-   application
+   tutorial
    theory
    einshard
    development

@@ -54,3 +54,5 @@ Output:
 │          │          │          │          │
 └──────────┴──────────┴──────────┴──────────┘
 ```
+
+For details of implementing data parallelism and 1-D tensor parallelism with einshard, please refer to <project:tutorial.md>.

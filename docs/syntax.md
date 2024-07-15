@@ -1,6 +1,6 @@
 # Syntax
 
-`einshard` leverages a simple and clear method to shard and replicate a single array according to the specified einshard expression. How to write a correct einshard expression? Let's take a look at the syntax.
+Einshard leverages a simple and clear method to shard and replicate a single array according to the specified einshard expression. How to write a correct einshard expression? Let's take a look at the syntax.
 
 ## Einshard Expression
 
@@ -115,6 +115,6 @@ import jax.numpy as jnp
 
    TODO: More examples and edge cases will be added to illustrate different placements and their effects on device groups of devices.
 
-When using `einshard`, consider the number of devices you have. You should always use `*` and `...` when possible to simplify the expressions and leverage the library's flexibility.
+When using einshard, consider the number of devices you have. You should always use `*` and `...` when possible to simplify the expressions and leverage the library's flexibility.
 
-By following these syntax rules, `einshard` allows you to efficiently implement data parallelism and 1-D tensor parallelism in JAX, among other parallel techniques, without modifying your model code.
+By following these syntax rules, einshard allows you to efficiently implement data parallelism and 1-D tensor parallelism in JAX without modifying your model code.
