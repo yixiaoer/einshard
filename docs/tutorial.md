@@ -4,11 +4,33 @@ With einshard, you can easily shard arrays across different devices in JAX witho
 
 Using the einshard API, you can partition or replicate a single array according to the specified einshard expression and distribute it across various devices. If the computation is naturally-sharded, JAX, leveraging the XLA compiler, will automatically determine the optimal output array sharding based on the input array's sharding. This means that by setting up the input array's sharding as desired, JAX will handle the parallel computation accordingly and automatically. This allows you to shard a model across different devices by placing the model’s arrays using einshard before computation begins.
 
+## Concepts: Axes and Parallelism
+
+Before using einshard to implement model parallelism, it's helpful to know some related concepts.
+
+We classify axes of an einsum expression into two types: 
+
+* **Free axis**: An axis is a free axis if it appears on the left-hand side and also on the right-hand side.
+
+* **Reduced axis**: An axis is a reduced axis if it appears on the left-hand side but is absent from the right-hand side.
+
+An einsum expression represents a computation that can be expressed using the einsum notation. For example, in the array multiplication expressed by `ab, bc → ac`, `a` and `c` are free axes, while `b` is a reduced axis.
+
+The relationship between the axes in a naturally-sharded einsum expression and the types of parallelism considered (data parallelism and 1-D tensor parallelism) is as follows:
+
+* If all sharded axes in an einsum expression are free axes, the computation is data parallelism.
+
+* If all sharded axes in an einsum expression are reduced axes, the computation is 1-D tensor parallelism.
+
+* If both free axes and reduced axes are sharded, the computation is hybrid parallelism of data parallelism and 1-D tensor parallelism.
+
+For further details, refer to <project:theory.md>. Given that this tutorial focuses on how to use einshard to shard a model, a basic understanding of how to distinguish these axes will suffice to proceed with parallelizing a model.
+
 ## Steps for Parallelizing a Model Using Einshard
 
 1. **Analyze the model architecture**:
 
-   Determine which axes are reduced axes and which are free axes in the arrays used for matrix multiplication (as can be represented by einsum expressions).
+   Determine which axes are reduced axes and which are free axes in the arrays used for array multiplication (as can be represented by einsum expressions).
 
 2. **Determine sharding and replication strategy**:
 
@@ -22,8 +44,8 @@ Using the einshard API, you can partition or replicate a single array according 
 
 Consider a 2-layer MLP. The computations can be represented by the following einsum expressions (ignoring the activation function, which is point-wise and not considered for sharding):
 
-* First matrix multiplication: `bx, xy -> by`, to compute `X @ W1 = Y`.
-* Second matrix multiplication: `by, yz -> bz`, to compute `Y @ W2 = Z`.
+* First array multiplication: `bx, xy -> by`, to compute `X @ W1 = Y`.
+* Second array multiplication: `by, yz -> bz`, to compute `Y @ W2 = Z`.
 
 Step-by-Step Sharding:
 
@@ -35,11 +57,11 @@ Step-by-Step Sharding:
 
    The array $X$ is the input data, while $W_1$ and $W_2$ are the model parameters for this 2-layer MLP. These arrays need to be sharded before the computation starts. Consider the following potential sharding strategies:
 
-   * Sharding the `b` axis in the first matrix computation results in the `b` axis being sharded in $Y$, and consequently, the final output $Z$ will also have the `b` axis sharded. The same applies if the `z` axis is sharded.
+   * Sharding the `b` axis in the first array computation results in the `b` axis being sharded in $Y$, and consequently, the final output $Z$ will also have the `b` axis sharded. The same applies if the `z` axis is sharded.
 
-   * Sharding the `x` axis in the first matrix computation results in $Y$ being complete after all-reduce. If the `z` axis of $W_2$ is sharded, the output $Z$ will be sharded.
+   * Sharding the `x` axis in the first array computation results in $Y$ being complete after all-reduce. If the `z` axis of $W_2$ is sharded, the output $Z$ will be sharded.
 
-   * Sharding the `y` axis in the first matrix computation results in the `y` axis being sharded in $Y$. If the `y` axis of $W_2$ is also sharded, the output $Z$ will be complete after all-reduce.
+   * Sharding the `y` axis in the first array computation results in the `y` axis being sharded in $Y$. If the `y` axis of $W_2$ is also sharded, the output $Z$ will be complete after all-reduce.
 
 3. **Use Einshard for sharding or replication**:
    If you expect to apply 1-D tensor parallelism and ensure the model parameters are efficiently sharded while obtaining a complete result, you can choose to shard the $y$ axis of $W_1$ and $W_2$.
